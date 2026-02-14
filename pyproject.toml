@@ -1,0 +1,28 @@
+[project]
+name = "nexo-tax"
+version = "0.1.0"
+description = "Finnish crypto tax calculator for Nexo card cashback"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = []
+
+[project.scripts]
+nexo-tax = "nexo_tax.cli.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "F",    # Pyflakes
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "SIM",  # flake8-simplify
+    "I",    # isort
+    "T20",  # flake8-print (flags print/pprint)
+]
+
+[dependency-groups]
+dev = ["pytest", "ruff", "ty"]
