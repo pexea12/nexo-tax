@@ -131,10 +131,10 @@ Try the tool with sample data to see how it works:
 
 ```bash
 # Analyze the sample 2024 data
-uv run main.py data/sample_nexo_export.csv --year 2024
+uv run nexo-tax data/sample_nexo_export.csv --year 2024
 
 # Generate detailed audit CSV reports
-uv run main.py data/sample_nexo_export.csv --year 2024 --audit-csv
+uv run nexo-tax data/sample_nexo_export.csv --year 2024 --audit-csv
 ```
 
 This will output a tax summary to the console and (with `--audit-csv`) create:
@@ -147,22 +147,22 @@ This will output a tax summary to the console and (with `--audit-csv`) create:
 
 **Analyze a single year:**
 ```bash
-uv run main.py your_nexo_export.csv --year 2024
+uv run nexo-tax your_nexo_export.csv --year 2024
 ```
 
 **Analyze multiple years:**
 ```bash
-uv run main.py your_nexo_export.csv --year 2023 2024 2025
+uv run nexo-tax your_nexo_export.csv --year 2023 2024 2025
 ```
 
 **Generate detailed audit CSVs:**
 ```bash
-uv run main.py your_nexo_export.csv --year 2024 --audit-csv
+uv run nexo-tax your_nexo_export.csv --year 2024 --audit-csv
 ```
 
 **Process multiple CSV files:**
 ```bash
-uv run main.py export_2023.csv export_2024.csv --year 2023 2024
+uv run nexo-tax export_2023.csv export_2024.csv --year 2023 2024
 ```
 
 ## CSV Format
@@ -172,7 +172,7 @@ uv run main.py export_2023.csv export_2024.csv --year 2023 2024
 For a quick trial without using your real transaction data, use the included sample:
 
 ```bash
-uv run main.py data/sample_nexo_export.csv --year 2024 --audit-csv
+uv run nexo-tax data/sample_nexo_export.csv --year 2024 --audit-csv
 ```
 
 The sample file (`data/sample_nexo_export.csv`) contains realistic example transactions:
@@ -186,13 +186,26 @@ All names and amounts are anonymized for demonstration purposes.
 
 ### Getting Your Own Nexo CSV Exports
 
-To analyze your real transactions:
+To analyze your real transactions, you need to export your transaction history from the Nexo website:
 
-1. Log in to your Nexo account
-2. Go to **Portfolio → Transactions**
-3. Select the date range covering all your transactions
-4. Click **Export as CSV**
-5. Save the file(s) locally
+1. **Log in to your Nexo account** at https://app.nexo.io
+2. Navigate to **Portfolio** → **Transactions** tab
+3. **Select all transactions** by using the filter or date range selector to cover your entire transaction history
+   - Use the date filter to select from the beginning of your first transaction
+   - Or select "All" if available
+4. **Export as CSV** by clicking the export button (usually a download or export icon)
+5. **Save the CSV file** to your local machine
+6. **Run the analyzer** on your exported file:
+   ```bash
+   uv run nexo-tax your_nexo_export.csv --year 2024
+   ```
+
+**Note:** The exported CSV file will contain all your transaction data including sensitive information. Keep it secure and do not share it publicly.
+
+If you want to export multiple years separately, you can select different date ranges and export multiple files, then process them together:
+```bash
+uv run nexo-tax export_2023.csv export_2024.csv --year 2023 2024
+```
 
 ### CSV Columns
 
