@@ -3,6 +3,7 @@
 pkgs.mkShell {
   packages = with pkgs; [
     gnumake
+    nodejs_20
     patchelf
     python314
     uv

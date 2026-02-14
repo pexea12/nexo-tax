@@ -165,6 +165,49 @@ uv run nexo-tax your_nexo_export.csv --year 2024 --audit-csv
 uv run nexo-tax export_2023.csv export_2024.csv --year 2023 2024
 ```
 
+## Web Interface (No-Backend Browser Calculator)
+
+A browser-based version lets you calculate taxes entirely in your browser with **zero data leaving your machine**.
+
+### Why Use the Web Version?
+
+- **Privacy**: Your CSV files never leave your browser — all calculations run locally via WebAssembly (Pyodide)
+- **No setup**: No Python, no installation, no command line
+- **Instant**: Load and calculate in seconds
+- **Same results**: Uses the exact same Python code as the CLI
+
+### Running the Dev Server
+
+```bash
+# Install Node.js dependencies (one-time setup)
+cd web
+npm install
+
+# Start the dev server
+npm run dev
+```
+
+Then open **http://localhost:5173** in your browser.
+
+### Building for Production
+
+```bash
+# Build the static site
+make web
+
+# Output is in web/dist/ — ready to deploy to any static hosting
+```
+
+### How It Works
+
+1. **Upload CSV files** by dragging and dropping or clicking to select
+2. **Select tax years** (auto-detected from your data)
+3. **Check "Generate audit CSV files"** if you want detailed reports
+4. **Click "Calculate Tax"**
+5. **View results** and download audit CSVs directly from the browser
+
+The entire Nexo Tax Calculator Python code runs in WebAssembly (Pyodide), so your data is processed 100% locally.
+
 ## CSV Format
 
 ### Sample Data

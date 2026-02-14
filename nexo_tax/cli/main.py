@@ -2,19 +2,7 @@ import argparse
 import logging
 from pathlib import Path
 
-from nexo_tax.calculator import (
-    build_lot_queue,
-    compute_annual_summary,
-    compute_card_analysis,
-)
-from nexo_tax.fx import FxRateTable
-from nexo_tax.parser import parse_csvs
-from nexo_tax.report import (
-    print_card_analysis,
-    print_summary,
-    write_audit_csv,
-    write_card_analysis_csv,
-)
+from nexo_tax.api import run as run_calculation
 
 logger = logging.getLogger(__name__)
 
@@ -40,87 +28,27 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    # 1. Parse all CSVs into a merged, date-sorted result
-    result = parse_csvs(args.csv_files)
-    logger.info("Parsed %d cashback events", len(result.cashback_events))
-    logger.info(
-        "Parsed %d cashback reversal events", len(result.cashback_reversal_events)
-    )
-    logger.info("Parsed %d interest events", len(result.interest_events))
-    logger.info("Parsed %d exchange buy events", len(result.exchange_buy_events))
-    logger.info(
-        "Parsed %d FX observations (card purchases)",
-        len(result.fx_observations),
-    )
-    logger.info("Parsed %d disposal events", len(result.disposal_events))
-    logger.info("Parsed %d card purchase events", len(result.card_purchase_events))
-    logger.info("Parsed %d repayment events", len(result.repayment_events))
+    # Read CSV file contents
+    csv_contents = []
+    for csv_file in args.csv_files:
+        with open(csv_file, encoding="utf-8") as f:
+            csv_contents.append(f.read())
 
-    # 2. Build FX rate table from all observations
-    fx = FxRateTable(result.fx_observations)
+    # Run calculation via API
+    result = run_calculation(csv_contents, args.year, args.audit_csv)
 
-    # 3. Apply EUR values to all events
-    for ev in result.cashback_events:
-        ev.value_eur = fx.convert_usd_to_eur(ev.value_usd, ev.date)
+    # Print console output
+    print(result["console"], end="")
 
-    for ev in result.cashback_reversal_events:
-        ev.value_eur = fx.convert_usd_to_eur(ev.value_usd, ev.date)
-
-    for ev in result.interest_events:
-        ev.value_eur = fx.convert_usd_to_eur(ev.value_usd, ev.date)
-
-    for ev in result.exchange_buy_events:
-        ev.value_eur = fx.convert_usd_to_eur(ev.value_usd, ev.date)
-
-    for ev in result.disposal_events:
-        ev.proceeds_eur = fx.convert_usd_to_eur(ev.proceeds_usd, ev.date)
-
-    # 4. Build per-asset FIFO lot queues from ALL acquisition sources (across years)
-    lots_by_asset = build_lot_queue(
-        result.cashback_events, result.interest_events, result.exchange_buy_events
-    )
-
-    # 5. Process each year sequentially (lots carry forward via FIFO)
-    for year in sorted(args.year):
-        summary = compute_annual_summary(
-            year,
-            result.cashback_events,
-            result.cashback_reversal_events,
-            result.interest_events,
-            result.exchange_buy_events,
-            result.disposal_events,
-            lots_by_asset,
-        )
-        print_summary(summary)
-
-        # Card cashback profitability analysis
-        net_cashback_eur = (
-            summary.total_cashback_eur - summary.total_cashback_reversal_eur
-        )
-        card_analysis = compute_card_analysis(
-            year,
-            result.card_purchase_events,
-            result.repayment_events,
-            net_cashback_eur,
-        )
-        print_card_analysis(card_analysis)
-
-        if args.audit_csv:
-            output_dir = Path("output")
-            write_audit_csv(
-                output_dir,
-                year,
-                result.cashback_events,
-                result.interest_events,
-                lots_by_asset,
-                summary,
-            )
-            write_card_analysis_csv(
-                output_dir,
-                card_analysis,
-                result.card_purchase_events,
-                result.repayment_events,
-            )
+    # Write audit files if requested
+    if args.audit_csv:
+        output_dir = Path("output")
+        output_dir.mkdir(parents=True, exist_ok=True)
+        for filename, content in result["audit_files"].items():
+            filepath = output_dir / filename
+            with open(filepath, "w", newline="") as f:
+                f.write(content)
+            logger.info("  Wrote %s", filepath)
 
 
 if __name__ == "__main__":

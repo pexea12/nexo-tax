@@ -1,4 +1,4 @@
-.PHONY: test lint typecheck check fmt run audit
+.PHONY: test lint typecheck check fmt run audit web serve
 
 test:
 	uv run pytest tests/ -v
@@ -19,3 +19,9 @@ run:
 
 audit:
 	uv run nexo-tax data/nexo_2024.csv data/nexo_2025.csv --year 2024 2025 --audit-csv
+
+web:
+	cd web && npm run build
+
+serve:
+	cd web && npm run dev
