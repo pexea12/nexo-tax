@@ -40,9 +40,11 @@ This tool helps Finnish tax residents calculate their tax liability on Nexo 2% c
 ### Requirements
 
 - Python 3.14+
-- Nix (for development environment)
+- [uv](https://docs.astral.sh/uv/) package manager
 
-### Quick Start
+### Setup (Option 1: With Nix - Recommended)
+
+Nix provides a reproducible development environment but is optional.
 
 1. **Enter the development shell:**
    ```bash
@@ -57,17 +59,46 @@ This tool helps Finnish tax residents calculate their tax liability on Nexo 2% c
 
 3. **Run tests:**
    ```bash
-   nix-shell --command "uv run pytest"
+   uv run pytest
    ```
 
 4. **Check code style:**
    ```bash
-   nix-shell --command "uv run ruff check ."
+   uv run ruff check .
    ```
 
 5. **Auto-fix code style issues:**
    ```bash
-   nix-shell --command "uv run ruff format . && uv run ruff check --fix ."
+   uv run ruff format . && uv run ruff check --fix .
+   ```
+
+### Setup (Option 2: Without Nix)
+
+If you don't have Nix, you can install Python 3.14 and uv directly:
+
+1. **Install Python 3.14** from [python.org](https://www.python.org) or your package manager
+2. **Install uv:**
+   ```bash
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   ```
+3. **Install/sync dependencies:**
+   ```bash
+   uv sync
+   ```
+
+4. **Run tests:**
+   ```bash
+   uv run pytest
+   ```
+
+5. **Check code style:**
+   ```bash
+   uv run ruff check .
+   ```
+
+6. **Auto-fix code style issues:**
+   ```bash
+   uv run ruff format . && uv run ruff check --fix .
    ```
 
 ### Adding Dependencies
@@ -75,22 +106,16 @@ This tool helps Finnish tax residents calculate their tax liability on Nexo 2% c
 To add a new package to the project:
 
 ```bash
-nix-shell --command "uv add package-name"
+uv add package-name
 ```
 
 For development-only dependencies (testing, linting, etc.):
 
 ```bash
-nix-shell --command "uv add --group dev package-name"
+uv add --group dev package-name
 ```
 
 ## Usage
-
-### Basic Command
-
-```bash
-nix-shell --command "uv run main.py EXPORT.csv --year 2024"
-```
 
 ### Arguments
 
