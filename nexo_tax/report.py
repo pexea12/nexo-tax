@@ -125,7 +125,7 @@ def write_audit_csv(
     # Acquisitions CSV (cashback)
     acq_path = output_dir / f"acquisitions_{year}.csv"
     with open(acq_path, "w", newline="") as f:
-        writer = csv.writer(f)
+        writer = csv.writer(f, quoting=csv.QUOTE_ALL)
         writer.writerow(
             ["tx_id", "date", "amount_nexo", "value_usd", "value_eur", "merchant"]
         )
@@ -146,7 +146,7 @@ def write_audit_csv(
     # Interest CSV
     int_path = output_dir / f"interest_{year}.csv"
     with open(int_path, "w", newline="") as f:
-        writer = csv.writer(f)
+        writer = csv.writer(f, quoting=csv.QUOTE_ALL)
         writer.writerow(
             ["tx_id", "date", "asset", "amount", "value_usd", "value_eur", "source"]
         )
@@ -168,7 +168,7 @@ def write_audit_csv(
     # Disposals CSV
     disp_path = output_dir / f"disposals_{year}.csv"
     with open(disp_path, "w", newline="") as f:
-        writer = csv.writer(f)
+        writer = csv.writer(f, quoting=csv.QUOTE_ALL)
         writer.writerow(
             [
                 "tx_id",
@@ -208,7 +208,7 @@ def write_audit_csv(
     # Remaining lots CSV
     lots_path = output_dir / f"remaining_lots_{year}.csv"
     with open(lots_path, "w", newline="") as f:
-        writer = csv.writer(f)
+        writer = csv.writer(f, quoting=csv.QUOTE_ALL)
         writer.writerow(
             [
                 "tx_id",
@@ -279,7 +279,7 @@ def write_card_analysis_csv(
 
     path = output_dir / f"card_analysis_{year}.csv"
     with open(path, "w", newline="") as f:
-        writer = csv.writer(f)
+        writer = csv.writer(f, quoting=csv.QUOTE_ALL)
         writer.writerow([
             "section", "tx_id", "date", "eur_amount", "usd_amount", "merchant",
         ])

@@ -12,5 +12,7 @@ wheels/
 # Virtual environments
 .venv
 
-# Data files
-*.csv
+# Data files (except sample/demo files)
+data/*.csv
+output/*.csv
+!data/sample_nexo_export.csv

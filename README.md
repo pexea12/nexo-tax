@@ -125,19 +125,39 @@ uv add --group dev package-name
 
 ### Examples
 
+#### Quick Start with Sample Data
+
+Try the tool with sample data to see how it works:
+
+```bash
+# Analyze the sample 2024 data
+uv run main.py data/sample_nexo_export.csv --year 2024
+
+# Generate detailed audit CSV reports
+uv run main.py data/sample_nexo_export.csv --year 2024 --audit-csv
+```
+
+This will output a tax summary to the console and (with `--audit-csv`) create:
+- `output/acquisitions_2024.csv` - All cashback/interest events
+- `output/disposals_2024.csv` - All NEXO disposals with FIFO cost basis
+- `output/remaining_lots_2024.csv` - Unsold NEXO still held
+- `output/card_analysis_2024.csv` - Card purchase/repayment details
+
+#### With Your Own Data
+
 **Analyze a single year:**
 ```bash
-uv run main.py nexo_export.csv --year 2024
+uv run main.py your_nexo_export.csv --year 2024
 ```
 
 **Analyze multiple years:**
 ```bash
-uv run main.py nexo_export.csv --year 2023 2024 2025
+uv run main.py your_nexo_export.csv --year 2023 2024 2025
 ```
 
 **Generate detailed audit CSVs:**
 ```bash
-uv run main.py nexo_export.csv --year 2024 --audit-csv
+uv run main.py your_nexo_export.csv --year 2024 --audit-csv
 ```
 
 **Process multiple CSV files:**
@@ -145,13 +165,47 @@ uv run main.py nexo_export.csv --year 2024 --audit-csv
 uv run main.py export_2023.csv export_2024.csv --year 2023 2024
 ```
 
-## Getting Nexo CSV Exports
+## CSV Format
+
+### Sample Data
+
+For a quick trial without using your real transaction data, use the included sample:
+
+```bash
+uv run main.py data/sample_nexo_export.csv --year 2024 --audit-csv
+```
+
+The sample file (`data/sample_nexo_export.csv`) contains realistic example transactions:
+- **Cashback events**: 2% rewards on card purchases
+- **Card purchases**: Nexo card transactions in USD/EUR
+- **Repayments**: EUR → USD liquidations to clear card
+- **Exchanges**: Selling/buying NEXO tokens
+- **Interest**: NEXO interest earned
+
+All names and amounts are anonymized for demonstration purposes.
+
+### Getting Your Own Nexo CSV Exports
+
+To analyze your real transactions:
 
 1. Log in to your Nexo account
-2. Go to Portfolio → Transactions
+2. Go to **Portfolio → Transactions**
 3. Select the date range covering all your transactions
-4. Export as CSV
+4. Click **Export as CSV**
 5. Save the file(s) locally
+
+### CSV Columns
+
+The Nexo CSV export includes:
+- **Type**: Transaction type (Cashback, Exchange, Nexo Card Purchase, etc.)
+- **Transaction**: Unique transaction ID
+- **Date / Time (UTC)**: Transaction timestamp
+- **Input Currency**: Currency/asset sent
+- **Input Amount**: Amount of input currency
+- **Output Currency**: Currency/asset received (if applicable)
+- **Output Amount**: Amount of output currency (if applicable)
+- **USD Equivalent**: USD value at transaction time
+- **Details**: Transaction description/merchant info
 
 ## Output
 
