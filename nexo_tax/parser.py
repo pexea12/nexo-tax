@@ -113,6 +113,7 @@ def parse_csv(path: Path) -> ParseResult:
             input_amount = Decimal(row["Input Amount"])
             output_currency = row["Output Currency"]
             value_usd = _parse_usd(row["USD Equivalent"])
+            merchant = _extract_merchant(row["Details"])
 
             if tx_type == "Cashback" and input_currency == "NEXO":
                 cashback_events.append(
@@ -122,7 +123,7 @@ def parse_csv(path: Path) -> ParseResult:
                         amount_nexo=input_amount,
                         value_usd=value_usd,
                         value_eur=Decimal("0"),
-                        merchant=_extract_merchant(row["Details"]),
+                        merchant=merchant,
                     )
                 )
             elif (
@@ -162,7 +163,7 @@ def parse_csv(path: Path) -> ParseResult:
                             proceeds_usd=value_usd,
                             proceeds_eur=Decimal("0"),
                             fee_eur=Decimal("0"),
-                            description=_extract_merchant(row["Details"]),
+                            description=merchant,
                         )
                     )
                 # Buying crypto → exchange buy
@@ -180,20 +181,22 @@ def parse_csv(path: Path) -> ParseResult:
                             value_eur=Decimal("0"),
                         )
                     )
-            elif tx_type in {"Manual Sell Order", "Withdrawal"}:
-                if _is_crypto(input_currency):
-                    disposal_events.append(
-                        DisposalEvent(
-                            tx_id=tx_id,
-                            date=date,
-                            asset=input_currency,
-                            quantity=abs(input_amount),
-                            proceeds_usd=value_usd,
-                            proceeds_eur=Decimal("0"),
-                            fee_eur=Decimal("0"),
-                            description=_extract_merchant(row["Details"]),
-                        )
+            elif (
+                tx_type in {"Manual Sell Order", "Withdrawal"}
+                and _is_crypto(input_currency)
+            ):
+                disposal_events.append(
+                    DisposalEvent(
+                        tx_id=tx_id,
+                        date=date,
+                        asset=input_currency,
+                        quantity=abs(input_amount),
+                        proceeds_usd=value_usd,
+                        proceeds_eur=Decimal("0"),
+                        fee_eur=Decimal("0"),
+                        description=merchant,
                     )
+                )
             elif tx_type == "Top up Crypto" and _is_crypto(input_currency):
                 exchange_buy_events.append(
                     ExchangeBuyEvent(
@@ -225,7 +228,7 @@ def parse_csv(path: Path) -> ParseResult:
                         date=date,
                         eur_amount=eur_amount,
                         usd_amount=usd_amount,
-                        merchant=_extract_merchant(row["Details"]),
+                        merchant=merchant,
                     )
                 )
             elif (
