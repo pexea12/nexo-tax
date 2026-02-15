@@ -4,7 +4,20 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nexo Tax Calculator</title>
+    <title>Nexo Tax Calculator — Finnish Crypto Tax from Nexo</title>
+    <meta name="description" content="Calculate your Finnish crypto taxes from Nexo card cashback, interest and disposals. Free, private — all calculations run in your browser." />
+    <!-- Plausible Analytics: set VITE_PLAUSIBLE_DOMAIN in .env to activate -->
+    <script>
+      (function() {
+        var domain = '%VITE_PLAUSIBLE_DOMAIN%';
+        if (!domain || domain === 'undefined') return;
+        var s = document.createElement('script');
+        s.defer = true;
+        s.dataset.domain = domain;
+        s.src = 'https://plausible.io/js/script.js';
+        document.head.appendChild(s);
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

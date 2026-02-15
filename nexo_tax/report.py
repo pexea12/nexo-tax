@@ -78,9 +78,14 @@ def print_summary(summary: AnnualSummary) -> None:
     if summary.disposal_results:
         for result in summary.disposal_results:
             d = result.disposal
+            acq_dates = [acq_date for _, _, _, acq_date in result.lots_consumed]
+            earliest_acq = min(acq_dates).strftime("%Y-%m-%d")
+            latest_acq = max(acq_dates).strftime("%Y-%m-%d")
+            acq_str = earliest_acq if earliest_acq == latest_acq else f"{earliest_acq} — {latest_acq}"
             lines += [
                 f"  Disposal: {d.description}",
-                f"    Date:            {d.date.strftime('%Y-%m-%d')}",
+                f"    Selling date:    {d.date.strftime('%Y-%m-%d')}",
+                f"    Acquired:        {acq_str}",
                 f"    Quantity:        {d.quantity:>18.8f} {d.asset}",
                 f"    Proceeds (EUR):  {d.proceeds_eur:>18.2f}",
                 f"    Fee (EUR):       {d.fee_eur:>18.2f}",
@@ -187,7 +192,7 @@ def write_audit_csv(
             d = result.disposal
             lots_detail = "; ".join(
                 f"{tx_id}:{qty:.8f}@{cost:.2f}"
-                for tx_id, qty, cost in result.lots_consumed
+                for tx_id, qty, cost, _acq_date in result.lots_consumed
             )
             writer.writerow(
                 [

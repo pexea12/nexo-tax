@@ -4,7 +4,6 @@ import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const srcDir = path.resolve(__dirname, '../..', 'nexo_tax')
-const destDir = path.resolve(__dirname, '../dist', 'nexo_tax')
 
 const copyDir = (src, dest) => {
   fs.mkdirSync(dest, { recursive: true })
@@ -22,8 +21,11 @@ const copyDir = (src, dest) => {
 }
 
 if (fs.existsSync(srcDir)) {
-  copyDir(srcDir, destDir)
-  console.log('✓ Copied nexo_tax package to dist')
+  const distDir = path.resolve(__dirname, '../dist', 'nexo_tax')
+  const publicDir = path.resolve(__dirname, '../public', 'nexo_tax')
+  copyDir(srcDir, distDir)
+  copyDir(srcDir, publicDir)
+  console.log('✓ Copied nexo_tax package to dist and public')
 } else {
   console.warn('⚠ nexo_tax directory not found')
 }

@@ -1,4 +1,5 @@
 from collections import deque
+from datetime import datetime
 from decimal import Decimal
 
 from nexo_tax.models import (
@@ -80,7 +81,7 @@ def process_disposal(
     lots = lots_by_asset.get(disposal.asset, deque())
     qty_needed = disposal.quantity
     total_cost = Decimal("0")
-    lots_consumed: list[tuple[str, Decimal, Decimal]] = []
+    lots_consumed: list[tuple[str, Decimal, Decimal, datetime]] = []
 
     while lots and qty_needed > 0:
         lot = lots[0]
@@ -89,7 +90,7 @@ def process_disposal(
         total_cost += cost_from_lot
         lot.remaining -= used
         qty_needed -= used
-        lots_consumed.append((lot.tx_id, used, cost_from_lot))
+        lots_consumed.append((lot.tx_id, used, cost_from_lot, lot.acquired_date))
         if lot.remaining <= 0:
             lots.popleft()
 

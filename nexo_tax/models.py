@@ -76,7 +76,7 @@ class DisposalResult:
     disposal: DisposalEvent
     cost_basis_eur: Decimal
     gain_eur: Decimal
-    lots_consumed: list[tuple[str, Decimal, Decimal]]  # (tx_id, qty_used, cost_eur)
+    lots_consumed: list[tuple[str, Decimal, Decimal, datetime]]  # (tx_id, qty_used, cost_eur, acquired_date)
 
 
 @dataclass

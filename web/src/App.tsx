@@ -3,15 +3,19 @@ import FileUpload from './components/FileUpload'
 import YearSelector from './components/YearSelector'
 import ResultsView from './components/ResultsView'
 import DownloadLinks from './components/DownloadLinks'
+import FeedbackForm from './components/FeedbackForm'
+import InfoSection from './components/InfoSection'
+import { trackEvent } from './hooks/usePlausible'
 import { usePyodide } from './hooks/usePyodide'
-import { DetectedYears } from './types'
+import { DetectedYears, YearResult } from './types'
 import './App.css'
 
 function App() {
   const { loading: pyodideLoading, error: pyodideError, runCalculation } = usePyodide()
   const [files, setFiles] = useState<File[]>([])
   const [detectedYears, setDetectedYears] = useState<DetectedYears>({})
-  const [consoleOutput, setConsoleOutput] = useState('')
+  const [yearResults, setYearResults] = useState<YearResult[]>([])
+  const [calcError, setCalcError] = useState('')
   const [auditFiles, setAuditFiles] = useState<Record<string, string>>({})
   const [isCalculating, setIsCalculating] = useState(false)
   const [useAuditCsv, setUseAuditCsv] = useState(false)
@@ -57,7 +61,8 @@ function App() {
 
   const handleFilesSelected = async (selectedFiles: File[]) => {
     setFiles(selectedFiles)
-    setConsoleOutput('')
+    setYearResults([])
+    setCalcError('')
     setAuditFiles({})
     await detectYearsFromFiles(selectedFiles)
   }
@@ -73,6 +78,7 @@ function App() {
     }
 
     setIsCalculating(true)
+    trackEvent('Calculate Tax', { years: selectedYears.join(','), files: files.length })
     try {
       // Read CSV contents
       const csvContents = await Promise.all(files.map((f) => f.text()))
@@ -80,10 +86,14 @@ function App() {
       // Run calculation
       const result = await runCalculation(csvContents, selectedYears, useAuditCsv)
 
-      setConsoleOutput(result.console)
-      setAuditFiles(result.audit_files)
+      setYearResults(result.years ?? [])
+      setAuditFiles(result.audit_files ?? {})
+      setCalcError('')
+      trackEvent('Calculation Success', { years: selectedYears.join(',') })
     } catch (err) {
-      setConsoleOutput(`Error: ${err instanceof Error ? err.message : String(err)}`)
+      setCalcError(err instanceof Error ? err.message : String(err))
+      setYearResults([])
+      trackEvent('Calculation Error')
     } finally {
       setIsCalculating(false)
     }
@@ -102,6 +112,8 @@ function App() {
       </header>
 
       <main>
+        <InfoSection />
+
         <FileUpload
           onFilesSelected={handleFilesSelected}
           disabled={pyodideLoading || isCalculating}
@@ -152,11 +164,21 @@ function App() {
           </>
         )}
 
-        {consoleOutput && <ResultsView output={consoleOutput} isLoading={isCalculating} />}
+        {calcError && (
+          <div style={{ marginTop: '1.5rem', color: '#f44336', background: '#1a0000', border: '1px solid #500', borderRadius: '6px', padding: '1rem', textAlign: 'left' }}>
+            <strong>Error:</strong> {calcError}
+          </div>
+        )}
+        {isCalculating && (
+          <div style={{ marginTop: '1.5rem', color: '#ffd700' }}>Calculating...</div>
+        )}
+        <ResultsView years={yearResults} />
 
         {Object.keys(auditFiles).length > 0 && (
           <DownloadLinks files={auditFiles} disabled={isCalculating} />
         )}
+
+        <FeedbackForm />
       </main>
 
       <footer>

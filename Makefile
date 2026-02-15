@@ -24,4 +24,4 @@ web:
 	cd web && npm run build
 
 serve:
-	cd web && npm run dev
+	cd web && node scripts/copy-nexo-tax.js && npm run dev

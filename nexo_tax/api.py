@@ -102,6 +102,7 @@ def run(
     )
 
     audit_files: dict[str, str] = {}
+    year_results: list[dict] = []
 
     # Process each year sequentially (lots carry forward via FIFO)
     for year in sorted(years):
@@ -128,6 +129,12 @@ def run(
         )
         print_card_analysis(card_analysis)
 
+        year_results.append({
+            "year": year,
+            "summary": _summary_to_dict(summary),
+            "card_analysis": _card_analysis_to_dict(card_analysis),
+        })
+
         if audit_csv:
             # Generate audit CSV files as strings
             audit_files.update(
@@ -146,6 +153,80 @@ def run(
     return {
         "console": log_buffer.getvalue(),
         "audit_files": audit_files,
+        "years": year_results,
+    }
+
+
+def _summary_to_dict(summary) -> dict:
+    """Serialize AnnualSummary to a plain dict with string Decimal values."""
+    net_cashback_eur = summary.total_cashback_eur - summary.total_cashback_reversal_eur
+    return {
+        "year": summary.year,
+        "total_cashback_events": summary.total_cashback_events,
+        "total_cashback_nexo": f"{summary.total_cashback_nexo:.8f}",
+        "total_cashback_eur": f"{summary.total_cashback_eur:.2f}",
+        "total_cashback_reversal_events": summary.total_cashback_reversal_events,
+        "total_cashback_reversal_eur": f"{summary.total_cashback_reversal_eur:.2f}",
+        "net_cashback_eur": f"{net_cashback_eur:.2f}",
+        "total_interest_events": summary.total_interest_events,
+        "total_interest_by_asset": {
+            asset: f"{qty:.8f}" for asset, qty in summary.total_interest_by_asset.items()
+        },
+        "total_interest_eur": f"{summary.total_interest_eur:.2f}",
+        "total_capital_income_eur": f"{net_cashback_eur + summary.total_interest_eur:.2f}",
+        "total_exchange_buy_events": summary.total_exchange_buy_events,
+        "total_exchange_buy_by_asset": {
+            asset: f"{qty:.8f}" for asset, qty in summary.total_exchange_buy_by_asset.items()
+        },
+        "total_exchange_buy_eur": f"{summary.total_exchange_buy_eur:.2f}",
+        "disposals": [
+            {
+                "tx_id": r.disposal.tx_id,
+                "date": r.disposal.date.strftime("%Y-%m-%d"),
+                "asset": r.disposal.asset,
+                "quantity": f"{r.disposal.quantity:.8f}",
+                "proceeds_eur": f"{r.disposal.proceeds_eur:.2f}",
+                "fee_eur": f"{r.disposal.fee_eur:.2f}",
+                "cost_basis_eur": f"{r.cost_basis_eur:.2f}",
+                "gain_eur": f"{r.gain_eur:.2f}",
+                "description": r.disposal.description,
+                "acquired_range": _acq_range(r.lots_consumed),
+            }
+            for r in summary.disposal_results
+        ],
+        "total_disposal_proceeds_eur": f"{summary.total_disposal_proceeds_eur:.2f}",
+        "total_disposal_cost_basis_eur": f"{summary.total_disposal_cost_basis_eur:.2f}",
+        "total_disposal_gain_eur": f"{summary.total_disposal_gain_eur:.2f}",
+        "remaining_lots": summary.remaining_lots,
+        "remaining_by_asset": {
+            asset: f"{qty:.8f}" for asset, qty in summary.remaining_by_asset.items()
+        },
+    }
+
+
+def _acq_range(lots_consumed: list) -> str:
+    """Return 'YYYY-MM-DD' or 'YYYY-MM-DD — YYYY-MM-DD' acquisition date range."""
+    dates = [acq_date for _, _, _, acq_date in lots_consumed]
+    if not dates:
+        return ""
+    earliest = min(dates).strftime("%Y-%m-%d")
+    latest = max(dates).strftime("%Y-%m-%d")
+    return earliest if earliest == latest else f"{earliest} — {latest}"
+
+
+def _card_analysis_to_dict(analysis) -> dict:
+    """Serialize CardAnalysisSummary to a plain dict."""
+    return {
+        "year": analysis.year,
+        "total_purchase_eur": f"{analysis.total_purchase_eur:.2f}",
+        "total_purchase_usd": f"{analysis.total_purchase_usd:.2f}",
+        "total_repayment_eur": f"{analysis.total_repayment_eur:.2f}",
+        "total_repayment_usd": f"{analysis.total_repayment_usd:.2f}",
+        "fx_spread_eur": f"{analysis.fx_spread_eur:.2f}",
+        "cashback_eur": f"{analysis.cashback_eur:.2f}",
+        "cashback_tax_eur": f"{analysis.cashback_tax_eur:.2f}",
+        "net_benefit_eur": f"{analysis.net_benefit_eur:.2f}",
+        "effective_rate_pct": f"{analysis.effective_rate_pct:.2f}",
     }
 
 
@@ -224,7 +305,7 @@ def _generate_audit_csvs(
         d = result.disposal
         lots_detail = "; ".join(
             f"{tx_id}:{qty:.8f}@{cost:.2f}"
-            for tx_id, qty, cost in result.lots_consumed
+            for tx_id, qty, cost, _acq_date in result.lots_consumed
         )
         writer.writerow(
             [
