@@ -13,8 +13,7 @@
     "destination": "dist",
     "include": ["/"],
     "puppeteerArgs": ["--no-sandbox", "--disable-setuid-sandbox"],
-    "puppeteerExecutablePath": "/etc/profiles/per-user/pexea12/bin/chromium",
-    "inlineCss": false,
+"inlineCss": false,
     "minifyHtml": false
   },
   "dependencies": {

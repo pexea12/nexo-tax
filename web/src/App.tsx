@@ -4,6 +4,7 @@ import YearSelector from './components/YearSelector'
 import ResultsView from './components/ResultsView'
 import DownloadLinks from './components/DownloadLinks'
 import FeedbackForm from './components/FeedbackForm'
+import Footer from './components/Footer'
 import InfoSection from './components/InfoSection'
 import { trackEvent } from './hooks/usePlausible'
 import { usePyodide } from './hooks/usePyodide'
@@ -104,7 +105,7 @@ function App() {
       <header>
         <h1>Nexo Tax Calculator</h1>
         <p>Calculate your Finnish crypto tax from Nexo transactions</p>
-        {pyodideLoading && <div style={{ color: '#ffd700' }}>Loading Python runtime...</div>}
+        {pyodideLoading && <div style={{ color: '#ffd700' }}>Loading calculator...</div>}
         {pyodideError && <div style={{ color: '#ff6b6b' }}>Error: {pyodideError}</div>}
         <div style={{ fontSize: '0.85em', color: '#999', marginTop: '0.5rem' }}>
           <span aria-hidden="true">🔒</span> Your files never leave your browser. All calculations run locally.
@@ -181,31 +182,7 @@ function App() {
         <FeedbackForm />
       </main>
 
-      <footer>
-        <a
-          href="https://buymeacoffee.com/pexea12"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            background: '#FFDD00',
-            color: '#000',
-            fontWeight: 700,
-            fontSize: '0.95em',
-            padding: '0.55rem 1.25rem',
-            borderRadius: '8px',
-            textDecoration: 'none',
-            marginBottom: '1rem',
-          }}
-        >
-          <span aria-hidden="true">☕</span> Buy me a coffee
-        </a>
-        <p style={{ fontSize: '0.85em', color: '#999', margin: 0 }}>
-          Nexo Tax Calculator • <a href="https://github.com/pexea12/nexo-tax" rel="noopener noreferrer" target="_blank">GitHub</a>
-        </p>
-      </footer>
+      <Footer />
     </div>
   )
 }
