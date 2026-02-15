@@ -16,28 +16,31 @@ function Panel({ title, children, defaultOpen = false }: PanelProps) {
       marginBottom: '0.75rem',
       overflow: 'hidden',
     }}>
-      <button
-        onClick={() => setOpen(!open)}
-        style={{
-          width: '100%',
-          background: '#161616',
-          border: 'none',
-          padding: '0.9rem 1.25rem',
-          textAlign: 'left',
-          cursor: 'pointer',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          fontSize: '0.95em',
-          fontWeight: 600,
-          color: '#eee',
-        }}
-      >
-        <span>{title}</span>
-        <span style={{ color: '#666', fontSize: '0.85em', marginLeft: '0.5rem', flexShrink: 0 }}>
-          {open ? '▲' : '▼'}
-        </span>
-      </button>
+      <h3 style={{ margin: 0 }}>
+        <button
+          onClick={() => setOpen(!open)}
+          aria-expanded={open}
+          style={{
+            width: '100%',
+            background: '#161616',
+            border: 'none',
+            padding: '0.9rem 1.25rem',
+            textAlign: 'left',
+            cursor: 'pointer',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            fontSize: '0.95em',
+            fontWeight: 600,
+            color: '#eee',
+          }}
+        >
+          <span>{title}</span>
+          <span style={{ color: '#666', fontSize: '0.85em', marginLeft: '0.5rem', flexShrink: 0 }} aria-hidden="true">
+            {open ? '▲' : '▼'}
+          </span>
+        </button>
+      </h3>
       {open && (
         <div style={{
           padding: '1rem 1.25rem 1.25rem',

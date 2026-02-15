@@ -1,0 +1,16 @@
+{
+  "name": "Nexo Tax Calculator",
+  "short_name": "NexoTax",
+  "description": "Calculate your Finnish crypto taxes from Nexo card cashback, interest and disposals.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d0d0d",
+  "theme_color": "#1a1a2e",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

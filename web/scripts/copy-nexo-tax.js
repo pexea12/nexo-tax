@@ -29,3 +29,12 @@ if (fs.existsSync(srcDir)) {
 } else {
   console.warn('⚠ nexo_tax directory not found')
 }
+
+// Copy sample CSV to public and dist
+const sampleSrc = path.resolve(__dirname, '../../data/sample_nexo_export.csv')
+if (fs.existsSync(sampleSrc)) {
+  fs.copyFileSync(sampleSrc, path.resolve(__dirname, '../public/sample_nexo_export.csv'))
+  fs.mkdirSync(path.resolve(__dirname, '../dist'), { recursive: true })
+  fs.copyFileSync(sampleSrc, path.resolve(__dirname, '../dist/sample_nexo_export.csv'))
+  console.log('✓ Copied sample_nexo_export.csv')
+}

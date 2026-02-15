@@ -5,8 +5,17 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && node scripts/copy-nexo-tax.js",
+    "build": "tsc && vite build && node scripts/copy-nexo-tax.js && react-snap",
     "preview": "vite preview"
+  },
+  "reactSnap": {
+    "source": "dist",
+    "destination": "dist",
+    "include": ["/"],
+    "puppeteerArgs": ["--no-sandbox", "--disable-setuid-sandbox"],
+    "puppeteerExecutablePath": "/etc/profiles/per-user/pexea12/bin/chromium",
+    "inlineCss": false,
+    "minifyHtml": false
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -16,6 +25,7 @@
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.1",
+    "react-snap": "^1.23.0",
     "typescript": "^5.6.3",
     "vite": "^5.4.8"
   }

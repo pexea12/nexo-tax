@@ -72,6 +72,31 @@ export default function FileUpload({ onFilesSelected, disabled }: FileUploadProp
         </div>
         <div style={{ fontSize: '0.9em', color: '#999' }}>or click to select files</div>
       </label>
+      <div style={{ marginTop: '1rem', fontSize: '0.85em', color: '#666' }}>
+        New here?{' '}
+        <button
+          type="button"
+          onClick={async (e) => {
+            e.stopPropagation()
+            const resp = await fetch('/sample_nexo_export.csv')
+            const text = await resp.text()
+            const file = new File([text], 'sample_nexo_export.csv', { type: 'text/csv' })
+            onFilesSelected([file])
+          }}
+          disabled={disabled}
+          style={{
+            background: 'none',
+            border: 'none',
+            padding: 0,
+            color: '#646cff',
+            textDecoration: 'underline',
+            cursor: 'pointer',
+            fontSize: 'inherit',
+          }}
+        >
+          Try with sample data
+        </button>
+      </div>
     </div>
   )
 }

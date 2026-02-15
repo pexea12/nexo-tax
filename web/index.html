@@ -2,10 +2,61 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Nexo Tax Calculator — Finnish Crypto Tax from Nexo</title>
-    <meta name="description" content="Calculate your Finnish crypto taxes from Nexo card cashback, interest and disposals. Free, private — all calculations run in your browser." />
+    <meta name="description" content="Calculate your Finnish crypto taxes from Nexo card cashback, interest and disposals. Free, private — runs entirely in your browser. No data leaves your device." />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#1a1a2e" />
+    <link rel="canonical" href="https://nexotax.fi/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://nexotax.fi/" />
+    <meta property="og:title" content="Nexo Tax Calculator — Finnish Crypto Tax from Nexo" />
+    <meta property="og:description" content="Calculate your Finnish crypto taxes from Nexo card cashback, interest and disposals. Free and private — all calculations run in your browser." />
+    <meta property="og:image" content="https://nexotax.fi/og-image.png" />
+    <meta property="og:locale" content="en_FI" />
+    <meta property="og:site_name" content="Nexo Tax Calculator" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Nexo Tax Calculator — Finnish Crypto Tax from Nexo" />
+    <meta name="twitter:description" content="Calculate your Finnish crypto taxes from Nexo card cashback, interest and disposals. Free and private — all calculations run in your browser." />
+    <meta name="twitter:image" content="https://nexotax.fi/og-image.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- PWA manifest -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Nexo Tax Calculator",
+      "url": "https://nexotax.fi/",
+      "description": "Calculate your Finnish crypto taxes from Nexo card cashback, interest and disposals. Free, private — all calculations run in your browser.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      },
+      "featureList": [
+        "Finnish crypto tax calculation (Vero / MyTax)",
+        "NEXO cashback capital income",
+        "FIFO capital gains and losses",
+        "Nexo card FX spread analysis",
+        "Audit CSV export",
+        "100% private — runs in browser"
+      ]
+    }
+    </script>
+
     <!-- Plausible Analytics: set VITE_PLAUSIBLE_DOMAIN in .env to activate -->
     <script>
       (function() {

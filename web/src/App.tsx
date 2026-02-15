@@ -107,7 +107,7 @@ function App() {
         {pyodideLoading && <div style={{ color: '#ffd700' }}>Loading Python runtime...</div>}
         {pyodideError && <div style={{ color: '#ff6b6b' }}>Error: {pyodideError}</div>}
         <div style={{ fontSize: '0.85em', color: '#999', marginTop: '0.5rem' }}>
-          🔒 Your files never leave your browser. All calculations run locally.
+          <span aria-hidden="true">🔒</span> Your files never leave your browser. All calculations run locally.
         </div>
       </header>
 
@@ -182,8 +182,28 @@ function App() {
       </main>
 
       <footer>
-        <p style={{ fontSize: '0.85em', color: '#999' }}>
-          Nexo Tax Calculator • <a href="https://github.com/your-repo">GitHub</a>
+        <a
+          href="https://buymeacoffee.com/pexea12"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            background: '#FFDD00',
+            color: '#000',
+            fontWeight: 700,
+            fontSize: '0.95em',
+            padding: '0.55rem 1.25rem',
+            borderRadius: '8px',
+            textDecoration: 'none',
+            marginBottom: '1rem',
+          }}
+        >
+          <span aria-hidden="true">☕</span> Buy me a coffee
+        </a>
+        <p style={{ fontSize: '0.85em', color: '#999', margin: 0 }}>
+          Nexo Tax Calculator • <a href="https://github.com/pexea12/nexo-tax" rel="noopener noreferrer" target="_blank">GitHub</a>
         </p>
       </footer>
     </div>
