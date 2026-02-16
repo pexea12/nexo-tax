@@ -87,7 +87,35 @@ export default function InfoSection() {
         How it works
       </h2>
 
-      <Panel title="What is the Nexo card and how does cashback work?" defaultOpen>
+      <Panel title="Why use this tool instead of Koinly?" defaultOpen>
+        <p style={{ marginTop: 0 }}>
+          Nexo's own recommendation is to use <strong>Koinly</strong> for tax reporting — but Koinly has
+          real limitations that make it a poor fit for Finnish Nexo cardholders:
+        </p>
+        <ul style={{ paddingLeft: '1.2rem', margin: '0.5rem 0' }}>
+          <li>
+            <strong>Transaction caps &amp; high cost</strong> — Koinly's free tier supports only up to
+            10,000 transactions. If you use the Nexo card regularly you can exceed this quickly,
+            forcing you onto paid plans that cost €49–€279 per year.
+          </li>
+          <li>
+            <strong>Generic, not Finland-specific</strong> — Koinly is a general-purpose tool. It does
+            not understand Nexo's cashback mechanics in detail or apply Finnish Vero rules
+            (capital income vs. capital gains, FIFO lot matching) out of the box.
+          </li>
+          <li>
+            <strong>No effective cashback rate</strong> — Koinly tells you your tax liability, but it
+            cannot answer the most important question: <em>is the Nexo card actually worth using?</em>{' '}
+            This tool calculates your true effective cashback rate after accounting for tax and FX spread costs.
+          </li>
+        </ul>
+        <Callout color="#4caf50">
+          This tool is <strong>free, open-source, and runs entirely in your browser</strong> — no account,
+          no subscription, no data upload. Your CSV files never leave your device.
+        </Callout>
+      </Panel>
+
+      <Panel title="What is the Nexo card and how does cashback work?">
         <p style={{ marginTop: 0 }}>
           The <strong>Nexo credit card</strong> lets you spend your crypto as collateral without selling it.
           Every purchase earns <strong>2% cashback in NEXO tokens</strong>.

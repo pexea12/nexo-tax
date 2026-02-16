@@ -36,6 +36,40 @@ from nexo_tax.report import (
 )
 
 
+REQUIRED_COLUMNS = {
+    "Transaction",
+    "Type",
+    "Input Currency",
+    "Input Amount",
+    "Output Currency",
+    "Output Amount",
+    "USD Equivalent",
+    "Fee",
+    "Fee Currency",
+    "Details",
+    "Date / Time (UTC)",
+}
+
+
+def validate_csv_schema(content: str) -> None:
+    """Validate that a CSV string has all required Nexo export columns.
+
+    Raises:
+        ValueError: If required columns are missing.
+    """
+    reader = csv.DictReader(io.StringIO(content))
+    if reader.fieldnames is None:
+        raise ValueError("CSV file is empty or has no header row.")
+    actual_columns = set(reader.fieldnames)
+    missing = REQUIRED_COLUMNS - actual_columns
+    if missing:
+        missing_list = ", ".join(sorted(missing))
+        raise ValueError(
+            f"CSV is missing required columns: {missing_list}. "
+            "Make sure you are using an official Nexo transaction export."
+        )
+
+
 def run(
     csv_contents: list[str], years: list[int], audit_csv: bool = False
 ) -> dict[str, str | dict[str, str]]:
@@ -60,6 +94,13 @@ def run(
     logger.handlers.clear()
     logger.addHandler(handler)
     logger.setLevel(logging.INFO)
+
+    # Validate CSV schema before parsing
+    for i, content in enumerate(csv_contents):
+        try:
+            validate_csv_schema(content)
+        except ValueError as e:
+            raise ValueError(f"File {i + 1}: {e}") from e
 
     # Parse all CSV contents
     result = parse_csvs_from_strings(csv_contents)

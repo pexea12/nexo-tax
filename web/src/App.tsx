@@ -11,6 +11,30 @@ import { usePyodide } from './hooks/usePyodide'
 import { DetectedYears, YearResult } from './types'
 import './App.css'
 
+const REQUIRED_COLUMNS = [
+  'Transaction',
+  'Type',
+  'Input Currency',
+  'Input Amount',
+  'Output Currency',
+  'Output Amount',
+  'USD Equivalent',
+  'Fee',
+  'Fee Currency',
+  'Details',
+  'Date / Time (UTC)',
+]
+
+function validateCsvSchema(text: string, fileName: string): string | null {
+  const firstLine = text.split('\n')[0] ?? ''
+  const headers = firstLine.split(',').map((h) => h.trim().replace(/^"|"$/g, ''))
+  const missing = REQUIRED_COLUMNS.filter((col) => !headers.includes(col))
+  if (missing.length > 0) {
+    return `${fileName}: missing columns: ${missing.join(', ')}. Make sure you are using an official Nexo transaction export.`
+  }
+  return null
+}
+
 function App() {
   const { loading: pyodideLoading, error: pyodideError, runCalculation } = usePyodide()
   const [files, setFiles] = useState<File[]>([])
@@ -61,10 +85,26 @@ function App() {
   }
 
   const handleFilesSelected = async (selectedFiles: File[]) => {
-    setFiles(selectedFiles)
     setYearResults([])
-    setCalcError('')
     setAuditFiles({})
+
+    // Validate CSV schema for each file
+    const validationErrors: string[] = []
+    for (const file of selectedFiles) {
+      const text = await file.text()
+      const error = validateCsvSchema(text, file.name)
+      if (error) validationErrors.push(error)
+    }
+
+    if (validationErrors.length > 0) {
+      setCalcError(validationErrors.join('\n'))
+      setFiles([])
+      setDetectedYears({})
+      return
+    }
+
+    setCalcError('')
+    setFiles(selectedFiles)
     await detectYearsFromFiles(selectedFiles)
   }
 
@@ -113,8 +153,6 @@ function App() {
       </header>
 
       <main>
-        <InfoSection />
-
         <FileUpload
           onFilesSelected={handleFilesSelected}
           disabled={pyodideLoading || isCalculating}
@@ -178,6 +216,8 @@ function App() {
         {Object.keys(auditFiles).length > 0 && (
           <DownloadLinks files={auditFiles} disabled={isCalculating} />
         )}
+
+        <InfoSection />
 
         <FeedbackForm />
       </main>

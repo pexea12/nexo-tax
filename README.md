@@ -14,6 +14,17 @@ A Finnish crypto tax calculator for Nexo card cashback that computes capital inc
 
 The authors and contributors accept **no liability** for incorrect tax calculations, missed deadlines, penalties, or any consequences arising from the use of this tool.
 
+## Why This Tool?
+
+Nexo recommends using Koinly for tax reporting, but Koinly has significant limitations:
+
+- **Transaction limits**: Koinly's free tier caps at 10,000 transactions. Heavy Nexo card users can easily exceed this, forcing you into paid plans.
+- **Cost**: Koinly plans start at ~€49/year and go up to €279/year for larger portfolios — just to file taxes on a credit card you already pay fees on.
+- **Generic, not Nexo-specific**: Koinly is a general-purpose tool and does not understand Nexo's specific cashback mechanics or the Finnish Vero tax rules in detail.
+- **No effective cashback rate**: Koinly tells you what you owe in tax, but does not tell you whether the Nexo card was actually worth using — i.e. the effective cashback rate after tax and FX spread costs.
+
+This tool is **free, open-source, and built specifically for Finnish Nexo cardholders**. It runs entirely in your browser (no account, no upload, no subscription) and gives you the one number Koinly cannot: your true effective cashback rate.
+
 ## Overview
 
 This tool helps Finnish tax residents calculate their tax liability on Nexo 2% card cashback rewards. It:

@@ -1,5 +1,6 @@
 import argparse
 import logging
+import sys
 from pathlib import Path
 
 from nexo_tax.api import run as run_calculation
@@ -34,8 +35,12 @@ def main() -> None:
         with open(csv_file, encoding="utf-8") as f:
             csv_contents.append(f.read())
 
-    # Run calculation via API
-    result = run_calculation(csv_contents, args.year, args.audit_csv)
+    # Run calculation via API (includes CSV schema validation)
+    try:
+        result = run_calculation(csv_contents, args.year, args.audit_csv)
+    except ValueError as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
 
     # Print console output
     print(result["console"], end="")
