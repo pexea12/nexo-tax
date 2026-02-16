@@ -13,6 +13,7 @@
     "destination": "dist",
     "include": ["/"],
     "puppeteerArgs": ["--no-sandbox", "--disable-setuid-sandbox"],
+    "skipThirdPartyRequests": true,
 "inlineCss": false,
     "minifyHtml": false
   },
