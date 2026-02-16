@@ -21,9 +21,17 @@ export default function Footer() {
       >
         <span aria-hidden="true">☕</span> Buy me a coffee
       </a>
-      <p style={{ fontSize: '0.85em', color: '#999', margin: 0 }}>
+      <p style={{ fontSize: '0.85em', color: '#999', margin: '0 0 0.5rem' }}>
         Nexo Tax Calculator
       </p>
+      <a
+        href="https://github.com/pexea12/nexo-tax"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ fontSize: '0.85em', color: '#646cff' }}
+      >
+        View on GitHub
+      </a>
     </footer>
   )
 }
