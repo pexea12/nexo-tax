@@ -18,18 +18,18 @@ export default function FeedbackForm() {
     e.preventDefault()
     if (rating === 0) return
 
-    if (!ACCESS_KEY) {
-      setErrorMsg('Feedback endpoint not configured.')
-      setState('error')
-      return
-    }
-
     setState('submitting')
     try {
+      const formData = new FormData()
+      formData.append('access_key', ACCESS_KEY)
+      formData.append('rating', String(rating))
+      formData.append('worked', worked)
+      formData.append('improve', improve)
+      formData.append('email', email)
+
       const res = await fetch(ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ access_key: ACCESS_KEY, rating, worked, improve, email }),
+        body: formData,
       })
       const data = await res.json().catch(() => ({}))
       if (data.success) {
