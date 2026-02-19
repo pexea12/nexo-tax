@@ -16,6 +16,8 @@ nix-shell        # Enter dev shell (provides python 3.14 + uv)
 
 `UV_PYTHON_PREFERENCE=only-system` is set in the shell hook so uv uses the Nix-provided Python rather than downloading its own.
 
+**Always run tools via nix-shell.** Use `nix-shell shell.nix --run "<command>"` rather than running commands directly. If a required tool is not available in the nix-shell, add it to `shell.nix` first before running it.
+
 ## Code Style
 
 - Use type hints on all function signatures (parameters and return types).
