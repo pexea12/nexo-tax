@@ -119,7 +119,7 @@ function App() {
     }
 
     setIsCalculating(true)
-    trackEvent('Calculate Tax', { years: selectedYears.join(','), files: files.length })
+    trackEvent('Calculate Tax', { years: selectedYears.join(','), files: String(files.length) })
     try {
       // Read CSV contents
       const csvContents = await Promise.all(files.map((f) => f.text()))
