@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 type SubmitState = 'idle' | 'submitting' | 'success' | 'error'
 
-const ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY
+const ACCESS_KEY = '45517816-0505-4b26-a2a8-1081683b2225'
 const ENDPOINT = 'https://api.web3forms.com/submit'
 
 export default function FeedbackForm() {
