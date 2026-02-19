@@ -57,18 +57,6 @@
     }
     </script>
 
-    <!-- Plausible Analytics: set VITE_PLAUSIBLE_DOMAIN in .env to activate -->
-    <script>
-      (function() {
-        var domain = '%VITE_PLAUSIBLE_DOMAIN%';
-        if (!domain || domain === 'undefined') return;
-        var s = document.createElement('script');
-        s.defer = true;
-        s.dataset.domain = domain;
-        s.src = 'https://plausible.io/js/script.js';
-        document.head.appendChild(s);
-      })();
-    </script>
   </head>
   <body>
     <div id="root"></div>

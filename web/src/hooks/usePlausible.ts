@@ -1,9 +1,5 @@
-declare global {
-  interface Window {
-    plausible?: (event: string, options?: { props?: Record<string, string | number> }) => void
-  }
-}
+import { track } from '@plausible-analytics/tracker'
 
 export function trackEvent(name: string, props?: Record<string, string | number>) {
-  window.plausible?.(name, props ? { props } : undefined)
+  track(name, props ? { props } : undefined)
 }
