@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 
 type SubmitState = 'idle' | 'submitting' | 'success' | 'error'
 
-const ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT
+const ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY
+const ENDPOINT = 'https://api.web3forms.com/submit'
 
 export default function FeedbackForm() {
   const [rating, setRating] = useState(0)
@@ -17,7 +18,7 @@ export default function FeedbackForm() {
     e.preventDefault()
     if (rating === 0) return
 
-    if (!ENDPOINT) {
+    if (!ACCESS_KEY) {
       setErrorMsg('Feedback endpoint not configured.')
       setState('error')
       return
@@ -28,13 +29,13 @@ export default function FeedbackForm() {
       const res = await fetch(ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ rating, worked, improve, email }),
+        body: JSON.stringify({ access_key: ACCESS_KEY, rating, worked, improve, email }),
       })
-      if (res.ok) {
+      const data = await res.json().catch(() => ({}))
+      if (data.success) {
         setState('success')
       } else {
-        const data = await res.json().catch(() => ({}))
-        setErrorMsg(data?.error ?? 'Submission failed. Please try again.')
+        setErrorMsg(data?.message ?? 'Submission failed. Please try again.')
         setState('error')
       }
     } catch {

@@ -42,7 +42,7 @@ jobs:
         run: npm run build
         working-directory: web
         env:
-          VITE_FORMSPREE_ENDPOINT: ${{ secrets.VITE_FORMSPREE_ENDPOINT }}
+          VITE_WEB3FORMS_ACCESS_KEY: ${{ secrets.VITE_WEB3FORMS_ACCESS_KEY }}
           VITE_PLAUSIBLE_DOMAIN: nexo.archiesee.com
 
       - name: Deploy to Cloudflare Pages
