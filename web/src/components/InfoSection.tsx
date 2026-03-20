@@ -129,7 +129,7 @@ export default function InfoSection() {
         </ol>
         <Callout>
           To receive 2% cashback you must hold at least <strong>€5,000 of crypto</strong> on Nexo
-          with at least <strong>15% in NEXO tokens</strong>.
+          with at least <strong>10% in NEXO tokens</strong>.
         </Callout>
         <p style={{ marginBottom: 0 }}>
           The tool also tracks <strong>interest income</strong> (Fixed Term Interest, Exchange Cashback)

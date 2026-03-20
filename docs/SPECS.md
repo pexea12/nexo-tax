@@ -28,7 +28,7 @@ User flow per transaction:
 4. Later, user repays the card in EUR (e.g. 201 EUR) that is converted to USD inside Nexo.
 5. User never needs to sell NEXO to pay the card; the repayment is purely fiat.
 
-To get 2% cashback, the user must maintain at least 5,000 EUR of crypto and at least 15% in NEXO on Nexo. Therefore, the cashback is conditional on prior crypto holdings, not just spending volume.
+To get 2% cashback, the user must maintain at least 5,000 EUR of crypto and at least 10% in NEXO on Nexo. Therefore, the cashback is conditional on prior crypto holdings, not just spending volume.
 
 ## 3. Tax classification (Finnish rules)
 
@@ -46,7 +46,7 @@ Vero’s “cashback rewards” guidance distinguishes:
   - You receive extra units of crypto without usage restriction.
   - Classified as capital income equal to the fair market value at receipt.
 
-Nexo’s 2% requires minimum 5,000 EUR of crypto and 15% NEXO balance. This matches Case B: income **based on existing crypto assets**, so the reward is taxable capital income at receipt.
+Nexo’s 2% requires minimum 5,000 EUR of crypto and 10% NEXO balance. This matches Case B: income **based on existing crypto assets**, so the reward is taxable capital income at receipt.
 
 ### 3.2 Later disposal: capital gains/losses
 

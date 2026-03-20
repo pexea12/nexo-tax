@@ -24,7 +24,7 @@ Each acquisition event (cashback, interest, exchange buy) creates a "lot" — a 
 
 The total EUR value of all NEXO cashback received during the tax year.
 
-Nexo's 2% cashback is taxable capital income at receipt because the cashback rate depends on your crypto holdings (minimum 5,000 EUR of crypto and 15% in NEXO). This matches Vero's "Case B" classification — income based on existing crypto assets.
+Nexo's 2% cashback is taxable capital income at receipt because the cashback rate depends on your crypto holdings (minimum 5,000 EUR of crypto and 10% in NEXO). This matches Vero's "Case B" classification — income based on existing crypto assets.
 
 ### 2. Crypto Asset Disposals (Virtuaalivaluuttojen luovutukset)
 
