@@ -70,6 +70,9 @@ def build_lot_queue(
     return {asset: deque(lots) for asset, lots in lots_by_asset.items()}
 
 
+_DUST_THRESHOLD = Decimal("1E-8")
+
+
 def process_disposal(
     lots_by_asset: dict[str, deque[Lot]], disposal: DisposalEvent
 ) -> DisposalResult:
@@ -94,7 +97,7 @@ def process_disposal(
         if lot.remaining <= 0:
             lots.popleft()
 
-    if qty_needed > 0:
+    if qty_needed > _DUST_THRESHOLD:
         raise ValueError(
             f"Not enough {disposal.asset} lots to cover disposal of "
             f"{disposal.quantity} {disposal.asset}. "
